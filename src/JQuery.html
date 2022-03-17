@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JQuery发送Ajax请求</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+</head>
+<body>
+<button>GET请求</button>
+<button>POST请求</button>
+<button>通用型方法ajax</button>
+<script>
+    $('button').eq(0).click(() => {
+        // GET方式
+        $.get('http://localhost:8000/server_jquery', {a: 100, b: 200}, (data) => {
+            console.log(data);
+        });
+    });
+
+    $('button').eq(1).click(() => {
+        // POST方式
+        $.post('http://localhost:8000/server_jquery', {a: 100, b: 200}, (data) => {
+            console.log(data);
+        }, 'json'); //返回类型为json
+    });
+
+    $('button').eq(2).click(() => {
+        // 通用型方法ajax
+        $.ajax({                                            //ajax请求
+            url: 'http://localhost:8000/server_jquery',     //控制器的验证操作
+            type: 'post',                                   //发送数据方式
+            data: {a: 100, b: 200},                         //发送的数据
+            dataType: 'json',                               //返回数据的类型
+            success: function (result) {                    //请求成功以后执行函数，result为返回的数据对象
+                console.log(result);
+            },
+            timeout: 2000,
+            error: function () {
+                console.log('出错');
+            },
+            // 头信息
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        });
+    });
+
+</script>
+</body>
+</html>

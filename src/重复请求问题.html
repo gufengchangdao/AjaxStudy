@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>重复请求问题</title>
+    <style>
+        #result {
+            width: 200px;
+            height: 100px;
+            border: solid 1px #9900bb;
+        }
+
+    </style>
+</head>
+<body>
+<button>发送请求</button>
+<div id="result"></div>
+<script>
+
+    let btn = document.getElementsByTagName('button')[0];
+    let block = document.getElementById('result');
+    // 重复请求判断，防止用户频繁发送相同请求
+    let isSend = false;
+    let xhr = null;
+
+    btn.addEventListener('click', function () {
+        if (isSend) xhr.abort(); //取消之前的请求，重新发送请求
+        // 创建对象
+        xhr = new XMLHttpRequest();
+        isSend = true;
+        xhr.open('POST', 'http://127.0.0.1:8000/delay');
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.send();
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                isSend = false;
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    block.innerHTML = xhr.response;
+                }
+            }
+        };
+    });
+
+</script>
+</body>
+</html>

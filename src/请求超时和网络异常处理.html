@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #result {
+            width: 200px;
+            height: 100px;
+            border: solid 1px #90b;
+        }
+    </style>
+</head>
+<body>
+<button>点击发送请求</button>
+<button>点击取消请求</button>
+<div id="result"></div>
+<script>
+    let btn = document.querySelectorAll('button');
+    let block = document.getElementById('result');
+    let xhr = new XMLHttpRequest();
+
+    btn[0].onclick = function () {
+        // 超时设置2s，2s中得不到响应就取消请求
+        xhr.timeout = 2000;
+        // 请求超时
+        xhr.ontimeout = function () {
+            alert("请求超时");
+        };
+        // 未联网
+        xhr.onerror = function () {
+            alert("你的网络出现了一些问题");
+        };
+
+        xhr.open('POST', 'http://127.0.0.1:8000/delay');
+        xhr.send();
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState === 4) {
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    block.innerHTML = xhr.response;
+                }
+            }
+        };
+    };
+
+    btn[1].addEventListener('click', () => {
+        xhr.abort();
+        alert('你取消了请求');
+    });
+
+</script>
+</body>
+</html>

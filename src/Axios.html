@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>axios发送ajax请求</title>
+    <!--引入axios.js文件-->
+    <script crossorigin="anonymous" src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.1/axios.js"></script>
+</head>
+<body>
+<button>GET请求</button>
+<button>POST请求</button>
+<button>AJAX请求</button>
+
+<script>
+    let btn = document.querySelectorAll('button');
+    // 配置baseURL
+    axios.defaults.baseURL = 'http://localhost:8000';
+    btn[0].onclick = function () {
+        axios.get('/server_jquery', {
+            // url参数
+            params: {
+                name: '李小龙',
+                favor: '喜欢功夫',
+            },
+            // 请求头信息
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }).then(value => {
+            console.log(value); //返回了很多信息，包括请求信息、响应信息、配置、状态码、状态字符串等
+            // console.log(value.data);
+        });
+    };
+
+    btn[1].onclick = function () {
+        axios.post('/server_jquery', {
+            // 表单数据
+            username: '123456',
+            password: '123456',
+        }, {
+            params: {
+                name: '李小龙',
+                favor: '喜欢功夫',
+            },
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }).then(value => {
+            console.log(value.data);
+        });
+    };
+
+    btn[2].onclick = function () {
+        axios({
+            method: 'post',
+            url: '/server_jquery',
+            // URL参数
+            params: {
+                name: '李小龙'
+            },
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            // 请求体
+            data: {
+                username: '123456',
+                password: '123456',
+            }
+        }).then(value => {
+            console.log(value.status); //响应行的状态码
+            console.log(value.headers); //响应头
+            console.log(value.data); //响应体
+        });
+    };
+
+</script>
+</body>
+</html>

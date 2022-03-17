@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jsonp的使用</title>
+    <style>
+        #result {
+            width: 200px;
+            height: 300px;
+            border: 1px solid #389;
+        }
+    </style>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+<button>发送请求</button>
+<div id="result"></div>
+
+<script>
+    $('button').eq(0).click(function () {
+        // URL参数里面会有函数调用的一个函数(callback的值)，只要服务端返回 函数名(数据) 就可以被接收到
+        $.getJSON('http://localhost:8000/jsonp_use?callback=?', function (data) {
+            $('#result').html(`
+                名称：${data.name}<br>
+                位置：${data.location}
+            `);
+        });
+    });
+
+</script>
+</body>
+</html>

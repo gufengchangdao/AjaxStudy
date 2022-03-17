@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>POST请求</title>
+    <style>
+        #result {
+            width: 200px;
+            height: 100px;
+            border: solid 1px #9900bb;
+        }
+
+    </style>
+</head>
+<body>
+<div id="result">
+
+</div>
+<script>
+
+    let block = document.getElementById('result');
+    block.addEventListener('mouseover', function () {
+        // 创建对象
+        let xhr = new XMLHttpRequest();
+
+        // 1. 设置响应体数据的类型
+        // xhr.responseType='json';
+
+        // 初始化，设置请求方法和URL
+        // xhr.open('POST', 'http://127.0.0.1:8000/server');
+        //附加当前时间，表示请求的时间，用来解决IE浏览器缓存问题，当服务端更新响应体内容时，IE浏览器可能仍然会使用缓存的响应体(之前返回的)
+        // xhr.open('POST', 'http://127.0.0.1:8000/server?t='+Date.now());
+        xhr.open('POST', 'http://127.0.0.1:8000/server_json');
+
+        // 设置请求头
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        // xhr.setRequestHeader('name','zhangchao'); //自定义请求头，要发送必须在服务端设置允许该请求才行
+
+        // 请求体可以是任意格式，但是必须与后端处理方式相统一
+        xhr.send();
+        // xhr.send('a=100&b=200&c=300');
+        // xhr.send('a:100&b:200&c:300');
+        // xhr.send('任意字符串');
+
+        // 事件绑定
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    // 2. 手动将json数据转换为对象
+                    let person = JSON.parse(xhr.response);
+
+                    // 显示出来
+                    // block.innerHTML = xhr.response;
+                    // block.innerText = xhr.response.name + xhr.response.favor; //json数据转换为对象后
+                    block.innerText = person.name + person.favor; //json数据转换为对象后
+                }
+            }
+        };
+    });
+
+</script>
+</body>
+</html>
